@@ -9,16 +9,11 @@ import java.net.Socket;
 
 public class HttpServer {
 
-    public static void main(String[] args) {
-        HttpServer hserver = new HttpServer();
-        try {
-            hserver.startServer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public HttpServer(){
+        super();
     }
 
-    private void startServer() throws  IOException{
+    public void startServer() throws  IOException{
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(getPort());
