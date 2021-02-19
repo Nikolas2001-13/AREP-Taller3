@@ -12,7 +12,7 @@ public class NanoSparkWebDemo {
                 + "<title>Title of the document</title>\n"
                 + "</head>\n"
                 + "<body>\n"
-                + "<h1>Mi propio mensaje</h1>\n"
+                + "<h1>get from NanoSpark</h1>\n"
                 + "</body>\n"
                 + "</html>\n");
     }

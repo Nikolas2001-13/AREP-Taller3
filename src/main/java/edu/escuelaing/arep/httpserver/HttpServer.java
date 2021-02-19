@@ -1,4 +1,4 @@
-package edu.escuelaing.arep.nanosparkweb;
+package edu.escuelaing.arep.httpserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,11 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpServer {
 
+    private Map<String, Handler<String>> handlers = new HashMap<>();
+
     public HttpServer(){
         super();
+    }
+
+    public void registerHandler(Handler<String> h, String prefix){
+        handlers.put(prefix, h);
     }
 
     public void startServer() throws  IOException{
@@ -37,31 +45,49 @@ public class HttpServer {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
+            boolean pathRead = false;
+            String path = "";
             while ((inputLine = in.readLine()) != null) {
+                if(!pathRead){
+                    path = inputLine.split(" ")[1];
+                    System.out.println("Path read: " + path);
+                    pathRead = true;
+                }
                 System.out.println("Recibi: " + inputLine);
                 if (!in.ready()) {
                     break;
                 }
             }
-            outputLine = "HTTP/1.1 200 OK\r\n"
-                    + "Content-Type: text/html\r\n"
-                    + "\r\n"
-                    + "<!DOCTYPE html>\n"
-                    + "<html>\n"
-                    + "<head>\n"
-                    + "<meta charset=\"UTF-8\">\n"
-                    + "<title>Title of the document</title>\n"
-                    + "</head>\n"
-                    + "<body>\n"
-                    + "<h1>Mi propio mensaje</h1>\n"
-                    + "</body>\n"
-                    + "</html>\n" + inputLine;
-            out.println(outputLine);
+
+            String prefix = "/Apps";
+            String sufix = "/hello";
+            if(handlers.containsKey(prefix)){
+                out.println(handlers.get(prefix).handle(sufix));
+            }else{
+                out.println(getDefaultOkOuput());
+            }
+
             out.close();
             in.close();
             clientSocket.close();
         }
             serverSocket.close();
+    }
+
+    private String getDefaultOkOuput(){
+        return  "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: text/html\r\n"
+                + "\r\n"
+                + "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "<meta charset=\"UTF-8\">\n"
+                + "<title>Title of the document</title>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "<h1>Mi propio mensaje</h1>\n"
+                + "</body>\n"
+                + "</html>\n" ;
     }
 
     private int getPort() {
