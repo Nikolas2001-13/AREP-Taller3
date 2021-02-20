@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class HttpServer {
 
+    private int port;
     private Map<String, Handler> handlers = new HashMap<>();
 
     public HttpServer(){
@@ -18,6 +19,7 @@ public class HttpServer {
     }
 
     public void registerHandler(Handler h, String prefix){
+
         handlers.put(prefix, h);
     }
 
@@ -74,6 +76,7 @@ public class HttpServer {
                 outputLine = res;
             }
 
+            out.println(outputLine);
             out.close();
             in.close();
             clientSocket.close();
@@ -82,25 +85,16 @@ public class HttpServer {
     }
 
     private String getDefaultOkOuput(){
-        return  "HTTP/1.1 200 OK\r\n"
-                + "Content-Type: text/html\r\n"
-                + "\r\n"
-                + "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "<head>\n"
-                + "<meta charset=\"UTF-8\">\n"
-                + "<title>Title of the document</title>\n"
-                + "</head>\n"
-                + "<body>\n"
-                + "<h1>Mi propio mensaje</h1>\n"
-                + "</body>\n"
-                + "</html>\n" ;
+        return  "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n" + "<!DOCTYPE html>\n" + "<html>\n"
+                + "<head>\n" + "<meta charset=\"UTF-8\">\n" + "<title>Title of the document</title>\n" + "</head>\n"
+                + "<body>\n" + "<h1>Mi propio mensaje</h1>\n" + "</body>\n" + "</html>\n";
+    }
+
+    private void setPort(int port) {
+        this.port = port;
     }
 
     private int getPort() {
-        if (System.getenv("PORT") != null) {
-            return Integer.parseInt(System.getenv("PORT"));
-        }
-        return 35000; //returns default port if heroku-port isn't set
+        return port;
     }
 }
