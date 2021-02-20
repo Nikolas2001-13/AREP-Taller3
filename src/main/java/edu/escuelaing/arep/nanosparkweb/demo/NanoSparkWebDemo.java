@@ -12,13 +12,13 @@ public class NanoSparkWebDemo {
     public static void main(String[] args) throws IOException{
         port(getPort());
         String main = getFile("index.html");
-        get("", (req, resp) -> main);
+        get("", (req, res) -> main);
         String img = getFile("img.html");
-        get("img", (req , resp) -> img);
+        get("img", (req , res) -> img);
         String css = getFile("style.css");
-        get("css", (req, resp) -> css);
+        get("css", (req, res) -> css);
         String js = getFile("app.js");
-        get("js", (req, resp) -> js);
+        get("js", (req, res) -> js);
         startServer();
     }
 
