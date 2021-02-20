@@ -1,11 +1,11 @@
 package edu.escuelaing.arep.nanosparkweb;
 
-import com.sun.deploy.net.HttpRequest;
-import com.sun.deploy.net.HttpResponse;
 import edu.escuelaing.arep.httpserver.Handler;
 import edu.escuelaing.arep.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -27,6 +27,9 @@ public class NanoSparkServer implements Handler {
 
     private Map<String, BiFunction<HttpRequest, HttpResponse, String>> bodyMap = new HashMap();
 
+    /**
+     * Corre el servidor
+     */
     void startServer(){
         try {
             hserver.startServer(httpPort);
@@ -35,10 +38,19 @@ public class NanoSparkServer implements Handler {
         }
     }
 
+    /**
+     * asigna el puerto del servidor
+     * @param serverPort int
+     */
     public void port(int serverPort) {
         this.httpPort = serverPort;
     }
 
+    /**
+     * obtiene el path
+     * @param path string
+     * @param body bifunction
+     */
     public void get(String path, BiFunction<HttpRequest, HttpResponse, String> body) {
 
         bodyMap.put(path, body);

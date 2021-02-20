@@ -22,6 +22,10 @@ public class NanoSparkWebDemo {
         startServer();
     }
 
+    /**
+     * Obtiene el puerto por el cual va a correr
+     * @return puerto
+     */
     static int getPort() {
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
@@ -29,6 +33,12 @@ public class NanoSparkWebDemo {
         return 35000;
     }
 
+    /**
+     * Obtiene el documento que el usuario requiere
+     * @param name tipo String
+     * @return String
+     * @throws IOException
+     */
     static String getFile(String name) throws IOException {
         File htmlPage = new File(System.getProperty("user.dir"),"src/main/resources/public/"+name);
         FileReader reader = new FileReader(htmlPage);
