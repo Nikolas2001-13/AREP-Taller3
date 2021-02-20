@@ -11,17 +11,17 @@ import java.util.Map;
 
 public class HttpServer {
 
-    private Map<String, Handler<String>> handlers = new HashMap<>();
+    private Map<String, Handler> handlers = new HashMap<>();
 
     public HttpServer(){
         super();
     }
 
-    public void registerHandler(Handler<String> h, String prefix){
+    public void registerHandler(Handler h, String prefix){
         handlers.put(prefix, h);
     }
 
-    public void startServer() throws  IOException{
+    public void startServer(int httpPort) throws  IOException{
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(getPort());
@@ -59,12 +59,19 @@ public class HttpServer {
                 }
             }
 
-            String prefix = "/Apps";
-            String sufix = "/hello";
-            if(handlers.containsKey(prefix)){
-                out.println(handlers.get(prefix).handle(sufix));
-            }else{
-                out.println(getDefaultOkOuput());
+            String res = "";
+            for(String key: handlers.keySet()){
+                if(path.startsWith(key)){
+                    System.out.println("Hello "+path.substring(key.length()));
+                    String newPath = path.substring(key.length());
+                    res = handlers.get(key).handle(newPath, null , null);
+                }
+            }
+
+            if(res==null){
+                outputLine = getDefaultOkOuput();
+            } else {
+                outputLine = res;
             }
 
             out.close();

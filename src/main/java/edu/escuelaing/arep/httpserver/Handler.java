@@ -1,7 +1,10 @@
 package edu.escuelaing.arep.httpserver;
 
-public interface Handler<T> {
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
 
-    public T handle(String path);
+public interface Handler {
+
+    public String handle(String path, HttpRequest req, HttpResponse res);
 
 }
