@@ -65,7 +65,23 @@ public class NanoSparkServer implements Handler {
         if (functions.containsKey(path)) {
             return httpHeader() + functions.get(path).apply(req , res);
         }
-        return null;
+        return httpError();
+    }
+
+    private String httpError() {
+        return "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: text/html\r\n"
+                + "\r\n"
+                + "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "<meta charset=\"UTF-8\">\n"
+                + "<title>Title of the document</title>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "<h1>Error</h1>\n"
+                + "</body>\n"
+                + "</html>\n";
     }
 
     private String httpHeader() {
